@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('description');
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->string('price');
             $table->unsignedBigInteger('category_id')->constrained('categories')->onDelete('cascade');
             $table->string('stock');

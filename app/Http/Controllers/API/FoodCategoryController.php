@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Models\Food;
+use App\Http\Controllers\API\BaseController;
+use App\Models\Category;
 use Illuminate\Http\Request;
-use App\Http\Controllers\API\BaseController as BaseController;
 use Illuminate\Support\Facades\Validator;
 
-class FoodController extends BaseController
+class FoodCategoryController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -16,11 +16,10 @@ class FoodController extends BaseController
      */
     public function index()
     {
-
-        if ($can = can('food-list')) {
-            $foods = Food::all();
-            return $this->sendResponse($foods->toArray(), 'Foods retrieved successfully.');
-        } else {
+        if($can = can('category-list')){
+            $foodCategories = Category::all();
+            return $this->sendResponse($foodCategories->toArray(), 'Food Categories retrieved successfully.');
+        }else{
             return $this->sendError('Unauthorised.', ['error' => 'Unauthorised'], 401);
         }
     }
@@ -33,31 +32,29 @@ class FoodController extends BaseController
      */
     public function store(Request $request)
     {
-        if($can = can('food-create')){
+        if($can = can('category-create')){
             $input = $request->all();
             $validator = Validator::make($input, [
                 'name' => 'required',
                 'description' => 'required',
-                'price' => 'required',
-                'category_id' => 'required',
             ]);
-            // random food image url
-            $input['image'] = 'https://picsum.photos/200/300';
             if($validator->fails()){
                 return $this->sendError('Validation Error.', $validator->errors());
             }
-            $food = Food::create($input);
-            return $this->sendResponse($food->toArray(), 'Food created successfully.');
+            $foodCategory = Category::create($input);
+            return $this->sendResponse($foodCategory->toArray(), 'Food Category created successfully.');
+        }else{
+            return $this->sendError('Unauthorised.', ['error' => 'Unauthorised'], 401);
         }
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Food  $food
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Food $food)
+    public function show($id)
     {
         //
     }
@@ -65,10 +62,10 @@ class FoodController extends BaseController
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Food  $food
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Food $food)
+    public function edit($id)
     {
         //
     }
@@ -77,10 +74,10 @@ class FoodController extends BaseController
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Food  $food
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Food $food)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -88,10 +85,10 @@ class FoodController extends BaseController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Food  $food
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Food $food)
+    public function destroy($id)
     {
         //
     }

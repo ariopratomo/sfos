@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\FoodCategoryController;
+use App\Http\Controllers\API\FoodController;
 use App\Http\Controllers\API\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -29,4 +31,6 @@ Route::group([
     Route::get('me', [AuthController::class, 'me']);
     Route::post('permission', [AuthController::class, 'checkPermission']);
     Route::resource('user', UserController::class);
+    Route::resource('category', FoodCategoryController::class);
+    Route::resource('food', FoodController::class);
 });
