@@ -8,6 +8,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 use Laravel\Passport\HasApiTokens;
+use Illuminate\Support\Str;
+
 
 class User extends Authenticatable
 {
@@ -51,4 +53,5 @@ class User extends Authenticatable
     public function findForPassport($identifier) {
         return $this->orWhere('email', $identifier)->orWhere('name', $identifier)->first();
     }
+
 }
